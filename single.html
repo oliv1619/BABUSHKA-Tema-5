@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="da">
-
 <head>
     <meta charset="UTF-8">
     <title>Babushka Tema 5</title>
@@ -96,18 +95,21 @@
         </nav>
     </header>
 
-    <main class="retContainer"> </main>
-
-    <template class="retTemplate">
-        <article class="ret">
-            <h2 class="overskrift" data-navn></h2>
-            <img class="billede" data-billede src="" alt="">
-            <p class="kortBeskrivelse" data-kortbeskrivelse></p>
-            <p>Pris: <span class="pris" data-pris></span>, </p>
-        </article>
-    </template>
+    <main class="retContainer">
+        <section class="singleContainer">
+            <article class="ret">
+                <h2 class="overskrift" data-navn></h2>
+                <img class="billede" data-billede src="" alt="">
+                <p class="kortBeskrivelse" data-kortbeskrivelse></p>
+                <p>Pris: <span class="pris" data-pris></span>, </p>
+            </article>
+        </section>
+    </main>
 
     <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let id = urlParams.get("id");
+
         let dest = document.querySelector(".retContainer"),
             retter, menuFilter = "alle";
 
@@ -130,27 +132,19 @@
         }
 
         function visRetter() {
-            let temp = document.querySelector(".retTemplate");
             let dest = document.querySelector(".retContainer");
             document.querySelector("header h1").textContent = menuFilter;
             retter.forEach(ret => {
-                if (ret.kategori == menuFilter || menuFilter == "alle") {
-                    let klon = temp.cloneNode(true).content;
-                    klon.querySelector("[data-navn]").textContent = ret.navn;
-                    klon.querySelector("[data-billede]").src = "imgs/small/" + ret.billede + "-sm.jpg";
-                    klon.querySelector("[data-billede]").addEventListener("click", () => {
-                        window.location.href = "single.html?id=" + ret.id;
-                    })
-                    klon.querySelector("[data-kortbeskrivelse]").textContent = ret.kortbeskrivelse;
-                    klon.querySelector("[data-pris]").textContent = ret.pris;
-                    dest.appendChild(klon);
+                if (ret.id == id) {
+                    dest.querySelector("[data-navn]").textContent = ret.navn;
+                    dest.querySelector("[data-billede]").src = "imgs/small/" + ret.billede + "-sm.jpg";
+                    dest.querySelector("[data-kortbeskrivelse]").textContent = ret.kortbeskrivelse;
+                    dest.querySelector("[data-pris]").textContent = ret.pris;
                 }
             });
         }
     </script>
-    <footer>
 
-    </footer>
+
 </body>
-
 </html>
